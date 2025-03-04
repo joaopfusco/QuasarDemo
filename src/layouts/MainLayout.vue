@@ -11,28 +11,35 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
+        <q-toolbar-title @click="router.push('/')" class="cursor-pointer">
           Quasar App
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <ToggleTheme />
+        <q-btn
+          flat
+          dense
+          round
+          icon="logout"
+          aria-label="Logout"
+          @click="logout"
+        />
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
+      :mini="isMini"
+      show-if-above
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
+        <q-item-label header>
+          Menu
         </q-item-label>
 
         <EssentialLink
-          v-for="link in linksList"
+          v-for="link in menu"
           :key="link.title"
           v-bind="link"
         />
@@ -48,55 +55,21 @@
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import ToggleTheme from 'components/ToggleTheme.vue'
+import { useRouter } from 'vue-router'
+import menu from 'src/utils/menu'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(true)
+const isMini = ref(false)
 
 function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+  isMini.value = !isMini.value
+}
+
+const router = useRouter()
+
+function logout () {
+  window.sessionStorage.setItem('authUser', '')
+  router.push('/auth/login')
 }
 </script>

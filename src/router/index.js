@@ -26,5 +26,19 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
+  Router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth) {
+      const authUser = window.sessionStorage.getItem("authUser");
+      console.log('authUser', authUser)
+      if (authUser) {
+        return next();
+      } else {
+        return next('/auth/login');
+      }
+    }
+
+    return next();
+  })
+
   return Router
 })
