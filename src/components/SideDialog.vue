@@ -48,7 +48,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:isOpen', 'submit']);
+const emit = defineEmits(['update:isOpen', 'submit', 'reset-entity']);
 
 const dialogOpen = computed({
   get: () => props.isOpen,
@@ -91,7 +91,7 @@ const submitForm = () => {
 <style scoped>
 .side-dialog {
   width: 40vw;
-  max-width: 60vw;
+  min-width: 300px;
   height: 100vh;
   max-height: 100vh;
   overflow: hidden;

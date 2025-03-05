@@ -6,9 +6,10 @@
         outlined
         dense
         placeholder="Filter..."
-        class="filter-input"
+        class="q-my-md"
         clearable
         debounce="300"
+        style="width: 400px;"
       >
         <template v-slot:prepend>
           <q-icon name="search" />
@@ -175,9 +176,11 @@ const filteredRows = computed(() => {
 
   const lowerSearch = searchTerm.value.toLowerCase();
   return props.rows.filter(row =>
-    Object.values(row).some(value =>
-      String(value).toLowerCase().includes(lowerSearch)
-    )
+    Object.entries(row)
+      .filter(([key]) => key !== "created_at" && key !== "updated_at")
+      .some(([, value]) =>
+        String(value).toLowerCase().includes(lowerSearch)
+      )
   );
 });
 
