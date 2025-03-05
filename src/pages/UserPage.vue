@@ -1,6 +1,11 @@
 <template>
   <q-page class="flex flex-center">
-    <CrudTable :rows="users"/>
+    <CrudTable
+      :rows="users"
+      @add="handleAdd"
+      @update="handleUpdate"
+      @delete="handleDelete"
+    />
   </q-page>
 </template>
 
@@ -11,8 +16,27 @@ import api from 'src/services/api.js'
 
 const users = ref([]);
 
-onMounted(async () => {
+const getUsers = async () => {
   const response = await api.get('/user');
   users.value = response.data;
+};
+
+onMounted(async () => {
+  getUsers();
 });
+
+const handleAdd = async (user) => {
+  await api.post('/user', user);
+  getUsers();
+};
+
+const handleUpdate = async (user) => {
+  await api.put(`/user/${user.id}`, user);
+  getUsers();
+};
+
+const handleDelete = async (user) => {
+  await api.delete(`/user/${user.id}`);
+  getUsers();
+};
 </script>

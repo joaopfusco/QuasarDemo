@@ -195,7 +195,11 @@ const resetEntity = () => {
 };
 
 const handleSubmit = (data) => {
-  console.log("Form data submitted:", data);
+  if (data.id) {
+    emit("update", data);
+  } else {
+    emit("add", data);
+  }
   isDrawerOpen.value = false;
   resetEntity();
 };
