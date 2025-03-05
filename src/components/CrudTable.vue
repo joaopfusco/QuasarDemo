@@ -41,14 +41,14 @@
       </template>
 
       <template v-slot:body-cell="props">
-        <q-td :props="props">
+        <q-td :props="props" class="wrap-text">
           <q-chip
             v-if="typeof props.row[props.col.field] === 'boolean'"
             :color="props.row[props.col.field] ? 'green' : 'red'"
             text-color="white"
             dense
           >
-            {{ props.row[props.col.field] ? 'Sim' : 'Não' }}
+            {{ props.row[props.col.field] ? 'Yes' : 'No' }}
           </q-chip>
           <span v-else>
             {{ props.row[props.col.field] }}
@@ -159,6 +159,12 @@ const computedColumns = computed(() => {
     }));
   }
 
+  const idColumn = baseColumns.find(col => col.name === 'id');
+  if (idColumn) {
+    baseColumns = baseColumns.filter(col => col.name !== 'id');
+    baseColumns.unshift(idColumn);
+  }
+
   return [
     ...baseColumns,
     {
@@ -229,5 +235,13 @@ const deleteItem = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.wrap-text {
+  white-space: normal; /* Permite que o texto quebre */
+  word-wrap: break-word; /* Quebra palavras longas */
+  word-break: break-word; /* Quebra as palavras quando necessário */
+  max-width: 200px; /* Definindo uma largura máxima para as células */
+  overflow: hidden; /* Impede o overflow horizontal */
 }
 </style>

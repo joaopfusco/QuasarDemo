@@ -55,7 +55,7 @@ const dialogOpen = computed({
   set: (value) => emit('update:isOpen', value),
 });
 
-const excludedFields = ['Actions', 'Id', 'Created_at', 'Updated_at'];
+const excludedFields = ['Actions', 'Id', 'CreatedAt', 'UpdatedAt'];
 
 const formData = ref({});
 

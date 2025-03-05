@@ -5,11 +5,11 @@ const routes = [
     children: [
       {
         path: 'login',
-        component: () => import('pages/auth/LoginPage.vue')
+        component: () => import('pages/LoginPage.vue')
       },
       // {
       //   path: 'register',
-      //   component: () => import('pages/auth/RegisterPage.vue')
+      //   component: () => import('pages/RegisterPage.vue')
       // }
     ]
   },

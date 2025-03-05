@@ -68,7 +68,7 @@ import ToggleTheme from 'components/ToggleTheme.vue'
 import { useRouter } from 'vue-router'
 import menu from 'src/utils/menu'
 
-const userName = ref('Root')
+const userName = ref(JSON.parse(sessionStorage.getItem('user')).username)
 const userEmail = ref('root@email.com')
 
 const leftDrawerOpen = ref(true)
@@ -80,7 +80,8 @@ function toggleLeftDrawer () {
 const router = useRouter()
 
 function logout () {
-  window.sessionStorage.setItem('authUser', '')
+  window.sessionStorage.setItem('user', '')
+  window.sessionStorage.setItem('token', '')
   router.push('/auth/login')
 }
 </script>

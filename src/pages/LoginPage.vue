@@ -6,7 +6,7 @@
         <ToggleTheme />
       </q-card-section>
 
-      <q-form @submit.prevent="loginUser">
+      <q-form @submit.prevent="login">
         <q-card-section>
           <q-input outlined v-model="username" label="Username" class="q-mb-md" />
           <q-input outlined v-model="password" label="Password" type="password" />
@@ -34,10 +34,10 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ToggleTheme from 'src/components/ToggleTheme.vue'
-import { login } from 'src/utils/auth.js'
 import { useQuasar } from 'quasar'
+import api from 'src/services/api.js'
 
-const username = ref('')
+const username = ref(sessionStorage.getItem('username') || '')
 const password = ref('')
 const rememberMe = ref(false)
 const router = useRouter()
@@ -47,17 +47,29 @@ const $q = useQuasar()
 //   router.push('/auth/register')
 // }
 
-const loginUser = async () => {
-  const response = await login(username.value, password.value)
+const login = async () => {
+  const response = await api.post('/user/login', { username: username.value, password: password.value })
+  if (response.status === 200) {
+    if (rememberMe.value) {
+      sessionStorage.setItem('username', username.value)
+    } else {
+      sessionStorage.removeItem('username')
+    }
+
+    sessionStorage.setItem('user', JSON.stringify(response.data.user))
+    sessionStorage.setItem('token', response.data.token)
+  }
+
   $q.notify({
-    type: response.success ? 'positive' : 'negative',
+    type: response.status === 200 ? 'positive' : 'negative',
     message: response.message,
     position: 'bottom',
     timeout: 1000
   })
 
-  if (response.success) {
+  if (response.status === 200) {
     router.push('/')
   }
 }
+
 </script>

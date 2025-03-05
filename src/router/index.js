@@ -28,9 +28,8 @@ export default defineRouter(function (/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
-      const authUser = window.sessionStorage.getItem("authUser");
-      console.log('authUser', authUser)
-      if (authUser) {
+      const token = window.sessionStorage.getItem("token");;
+      if (token) {
         return next();
       } else {
         return next('/auth/login');
