@@ -49,7 +49,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ToggleTheme from 'src/components/ToggleTheme.vue'
-import { register } from 'src/utils/auth.js'
 import { useQuasar } from 'quasar'
 
 const username = ref('')
@@ -63,7 +62,11 @@ const goToLogin = () => {
 }
 
 const registerUser = async () => {
-  const response = await register(username.value, password.value, password2.value)
+  const response = {
+    success: true,
+    message: 'OK'
+  }
+
   $q.notify({
     type: response.success ? 'positive' : 'negative',
     message: response.message,

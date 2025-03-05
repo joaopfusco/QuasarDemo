@@ -13,8 +13,10 @@
 import { ref, onMounted } from 'vue';
 import CrudTable from '../components/CrudTable.vue';
 import api from 'src/services/api.js'
+import { useQuasar } from 'quasar'
 
 const users = ref([]);
+const $q = useQuasar()
 
 const getUsers = async () => {
   const response = await api.get('/user');
@@ -26,17 +28,35 @@ onMounted(async () => {
 });
 
 const handleAdd = async (user) => {
-  await api.post('/user', user);
+  const response = await api.post('/user', user);
+  $q.notify({
+    type: response.status === 200 ? 'positive' : 'negative',
+    message: response.statusText,
+    position: 'bottom',
+    timeout: 1000
+  })
   getUsers();
 };
 
 const handleUpdate = async (user) => {
-  await api.put(`/user/${user.id}`, user);
+  const response = await api.put(`/user/${user.id}`, user);
+  $q.notify({
+    type: response.status === 200 ? 'positive' : 'negative',
+    message: response.statusText,
+    position: 'bottom',
+    timeout: 1000
+  })
   getUsers();
 };
 
 const handleDelete = async (user) => {
-  await api.delete(`/user/${user.id}`);
+  const response = await api.delete(`/user/${user.id}`);
+  $q.notify({
+    type: response.status === 200 ? 'positive' : 'negative',
+    message: response.statusText,
+    position: 'bottom',
+    timeout: 1000
+  })
   getUsers();
 };
 </script>
