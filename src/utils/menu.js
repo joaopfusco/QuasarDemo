@@ -1,7 +1,7 @@
 const menu = [
   {
     title: 'Users',
-    caption: 'quasar.dev',
+    caption: 'table users',
     icon: 'person',
     link: '/#/user',
   },

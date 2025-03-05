@@ -30,7 +30,6 @@
     <q-drawer
       v-model="leftDrawerOpen"
       bordered
-      :mini="isMini"
       show-if-above
     >
       <q-list>
@@ -60,10 +59,9 @@ import { useRouter } from 'vue-router'
 import menu from 'src/utils/menu'
 
 const leftDrawerOpen = ref(true)
-const isMini = ref(false)
 
 function toggleLeftDrawer () {
-  isMini.value = !isMini.value
+  leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
 const router = useRouter()

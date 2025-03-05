@@ -3,17 +3,23 @@
         {
             "id": 1,
             "username": "Teste 1",
-            "password": "teste"
+            "password": "teste",
+            "created_at": "2021-07-01T00:00:00.000Z",
+            "updated_at": "2021-07-01T00:00:00.000Z"
         },
         {
             "id": 2,
             "username": "Teste 2",
-            "password": "teste"
+            "password": "teste",
+            "created_at": "2021-07-01T00:00:00.000Z",
+            "updated_at": "2021-07-01T00:00:00.000Z"
         },
         {
             "id": 3,
             "username": "Teste 3",
-            "password": "teste"
+            "password": "teste",
+            "created_at": "2021-07-01T00:00:00.000Z",
+            "updated_at": "2021-07-01T00:00:00.000Z"
         }
     ]
 }

@@ -53,7 +53,7 @@ const loginUser = async () => {
     type: response.success ? 'positive' : 'negative',
     message: response.message,
     position: 'bottom',
-    timeout: 3000
+    timeout: 1000
   })
 
   if (response.success) {
