@@ -15,17 +15,13 @@
         </template>
       </q-input>
 
-      <q-btn
-        color="primary"
-        icon="add"
-        label="Add"
-        @click="openDrawerAdd"
-      />
+      <q-btn color="primary" icon="add" label="Add" @click="openDrawerAdd" />
     </div>
 
     <q-table
       class="custom-table"
-      flat bordered
+      flat
+      bordered
       :rows="filteredRows"
       :columns="computedColumns"
       row-key="id"
@@ -45,7 +41,8 @@
 
       <template v-slot:body-cell="props">
         <q-td :props="props">
-          <q-chip v-if="typeof props.row[props.col.field] === 'boolean'"
+          <q-chip
+            v-if="typeof props.row[props.col.field] === 'boolean'"
             :color="props.row[props.col.field] ? 'green' : 'red'"
             text-color="white"
             dense
@@ -60,22 +57,8 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn
-            icon="edit"
-            color="primary"
-            flat
-            dense
-            round
-            @click="openDrawerUpdate(props.row)"
-          />
-          <q-btn
-            icon="delete"
-            color="red"
-            flat
-            dense
-            round
-            @click="$emit('delete', props.row)"
-          />
+          <q-btn icon="edit" color="primary" flat dense round @click="openDrawerUpdate(props.row)" />
+          <q-btn icon="delete" color="red" flat dense round @click="confirmDelete(props.row)" />
         </q-td>
       </template>
 
@@ -86,6 +69,24 @@
         </div>
       </template>
     </q-table>
+
+    <q-dialog v-model="confirmDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-icon name="warning" color="red" size="lg" class="q-mr-sm" />
+          <span class="text-h6">Tem certeza que deseja excluir?</span>
+        </q-card-section>
+
+        <q-card-section>
+          <p>Essa ação não pode ser desfeita.</p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn label="Delete" color="red" @click="deleteItem" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <SideDialog
       v-model:isOpen="isDrawerOpen"
@@ -114,11 +115,15 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(["add, update, delete"]);
+
 const $q = useQuasar();
 const isSmallScreen = ref($q.screen.lt.md);
 const searchTerm = ref("");
 const isDrawerOpen = ref(false);
 const selectedEntity = ref(null);
+const confirmDialog = ref(false);
+const itemToDelete = ref(null);
 
 onMounted(() => {
   $q.screen.setSizes({ sm: 640, md: 1024, lg: 1440, xl: 1920 });
@@ -132,6 +137,11 @@ const openDrawerAdd = () => {
 const openDrawerUpdate = (entity) => {
   isDrawerOpen.value = true;
   selectedEntity.value = entity;
+};
+
+const confirmDelete = (item) => {
+  itemToDelete.value = item;
+  confirmDialog.value = true;
 };
 
 const computedColumns = computed(() => {
@@ -179,6 +189,12 @@ const handleSubmit = (data) => {
   console.log("Form data submitted:", data);
   isDrawerOpen.value = false;
   resetEntity();
+};
+
+const deleteItem = () => {
+  emit("delete", itemToDelete.value);
+  confirmDialog.value = false;
+  itemToDelete.value = null;
 };
 </script>
 
